@@ -19,8 +19,6 @@ public class BigTrashController {
 	@Autowired
 	private BigTrashService bigTrashService;
 	
-	//post - /api/login 로그인
-	//post - /api/signup 로그아웃
 	
 	//@PostMapping("/test")
 	public void test(@RequestBody BigTrash test) {

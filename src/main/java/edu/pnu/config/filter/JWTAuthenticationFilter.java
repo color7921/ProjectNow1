@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -39,7 +40,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			e.printStackTrace();
 		}
 		// Security에게 로그인 요청에 필요한 객체 생성
-		Authentication authToken = new UsernamePasswordAuthenticationToken(member.getUsername(), member.getPassword());
+		Authentication authToken = new UsernamePasswordAuthenticationToken(member.getUsername(), member.getPassword(),
+				AuthorityUtils.createAuthorityList(member.getUsername()));
 		// 인증 진행 -> UserDetailsService를 상속받은 클래스의 loadUserByUsername 호출한다.
 		Authentication auth = authenticationManager.authenticate(authToken);
 		System.out.println("auth:" + auth);
