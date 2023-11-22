@@ -11,7 +11,7 @@ import edu.pnu.domain.BigTrash;
 import edu.pnu.service.BigTrashService;
 
 @RestController
-@RequestMapping("/api/search")
+@RequestMapping("/api")
 
 // /api/search?sido=값&cate=값&keyword=값
 public class BigTrashController {
@@ -24,12 +24,16 @@ public class BigTrashController {
 	public void test(@RequestBody BigTrash test) {
 		System.out.println(test);
 	}
+	
+	@GetMapping("/wastename")
+	public ResponseEntity<?> catetest(String cate){
+		return ResponseEntity.ok().body(bigTrashService.getCate(cate));
+	}
 	  
-	@GetMapping
+	@GetMapping("/search")
 	public ResponseEntity<?> test(String sido, String cate, String keyword) {
 		
 		return ResponseEntity.ok().body(bigTrashService.getBigTrash(sido, cate, keyword));
 	};
 	
-
 }

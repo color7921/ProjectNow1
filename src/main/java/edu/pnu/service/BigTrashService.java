@@ -3,6 +3,7 @@ package edu.pnu.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import edu.pnu.domain.BigTrash;
@@ -24,5 +25,10 @@ public class BigTrashService {
 			return bigTrashRepository.findBySidoAndNameContaining(sido, keyword);
 		}
 		return bigTrashRepository.findBySidoAndCateAndNameContaining(sido, cate, keyword);
+	}
+	//데이터가 객체로 받을때(name
+	public List<Object> getCate(String cate){
+	
+		return bigTrashRepository.findDistinctByCateContaining(cate);
 	}
 }

@@ -28,7 +28,6 @@ public class Board {
 	private Integer count;
 	private String tag;
 	private String create_date;
-	
-
-	
+	private String name;
+	private String cate;
 }
