@@ -1,11 +1,6 @@
 package edu.pnu.domain;
 
-
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,14 +13,22 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class Member {
+
+public class Board {
 
 	@Id
-	@Column(unique = true)
+	private Integer post_id;
 	private String username;
-	private String password;
+	private String title;
+	private String content;
+	private String image;
+	private Integer count;
+	private String tag;
+	private String create_date;
+	
 
+	
 }

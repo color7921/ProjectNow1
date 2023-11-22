@@ -1,6 +1,7 @@
 package edu.pnu.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,13 +18,26 @@ public class LoginController {
 
 	@Autowired
 	private PasswordEncoder encoder;
-	
+
 	@PostMapping("/signup")
-	public void signup(@RequestBody Member member) {
+	public ResponseEntity<?> signup(@RequestBody Member member) {
 		System.out.println(member);
-		memRepo.save(Member.builder()
-			.username(member.getUsername())
-			.password(encoder.encode(member.getPassword()))
-			.build());
+
+		try {
+			if (memRepo.existsByUsername(member.getUsername())) {
+				
+				return ResponseEntity.notFound().build();
+			} else {
+				memRepo.save(Member.builder()
+						.username(member.getUsername())
+						.password(encoder.encode(member.getPassword()))
+						.build());
+				return ResponseEntity.ok().build();
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ResponseEntity.notFound().build();
 	}
 }

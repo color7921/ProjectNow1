@@ -32,6 +32,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 		// request에서 json 타입의 [username/password]를 읽어서 Member 객체를 생성한다.
+		response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 		ObjectMapper mapper = new ObjectMapper();
 		Member member = null;
 		try {
@@ -45,6 +46,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		// 인증 진행 -> UserDetailsService를 상속받은 클래스의 loadUserByUsername 호출한다.
 		Authentication auth = authenticationManager.authenticate(authToken);
 		System.out.println("auth:" + auth);
+		
 		return auth;
 
 	}
