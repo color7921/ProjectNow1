@@ -1,5 +1,7 @@
 package edu.pnu.persistence;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +14,5 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 	@Query("SELECT b FROM Board b")
 	Page<Board> getBoardList(Pageable pageable);
 
+	List<Board> findByPostId(Integer postId);
 }

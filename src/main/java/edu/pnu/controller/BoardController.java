@@ -46,8 +46,8 @@ public class BoardController {
 			return ResponseEntity.ok(boardList);
 		}
 		
-//		@GetMapping("/nowBoard")
-//		public ResponseEntity<?> getPostDetail(@PathVariable Integer postId){
-//			Post post 
-//		}
+		@GetMapping("/nowBoard")
+		public ResponseEntity<?> getPostDetail(Integer postId){
+			return ResponseEntity.ok().body(boardService.getPostDetail(postId));
+		}
 }

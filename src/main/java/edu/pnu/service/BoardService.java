@@ -1,5 +1,7 @@
 package edu.pnu.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,5 +42,11 @@ public class BoardService  {
 		Pageable pageable = PageRequest.of(0, 25, Sort.Direction.DESC, "PostId");
 		Page<Board> pageList = boardRepo.findAll(pageable);
 		return pageList;
+	}
+	
+	public List<Board> getPostDetail(Integer postId){
+		List<Board> boardObjectList = boardRepo.findByPostId(postId);
+		
+		return boardRepo.findByPostId(postId);
 	}
 }
