@@ -3,6 +3,7 @@ package edu.pnu.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,9 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import edu.pnu.domain.BigTrash;
 import edu.pnu.domain.Board;
+import edu.pnu.domain.Member;
+import edu.pnu.persistence.BigTrashRepository;
 import edu.pnu.persistence.BoardRepository;
 import edu.pnu.persistence.CommentRepository;
+import edu.pnu.persistence.MemberRepository;
 import edu.pnu.service.BoardService;
 import edu.pnu.service.CommentService;
 
@@ -31,37 +39,80 @@ public class BoardController {
 	private CommentRepository commRepo;
 	@Autowired
 	private CommentService CommService;
-	
-	
-		@PostMapping("/nowWrite")
-		public ResponseEntity<?> postBoardList(@RequestBody Board board){
-			boardRepo.save(Board.builder()
-					
-					.username(board.getUsername())
-					.title(board.getTitle())
-					.content(board.getContent())
-					.image(board.getImage())
-					.count(board.getCount())
-					.tag(board.getTag())
-					.bigId(board.getBigId())
-					
-					
-					.build());
-			return ResponseEntity.ok().build();
-		}
+	@Autowired
+	private MemberRepository memRepo;
+	@Autowired
+	private BigTrashRepository bigRepo;
 
-		@GetMapping("/nowList")
-		public ResponseEntity<?> getBoardList(@RequestParam(required =false) String username) {
-			Page<Board> boardList = boardService.getBoardList(username);
-			return ResponseEntity.ok(boardList);
+	@PostMapping("/nowWrite")
+	public ResponseEntity<?> postBoardList(@RequestBody String board) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, Object> map = new HashMap<>();
+
+		Board B = new Board();
+		JsonNode jsonNode;
+		try {
+			jsonNode = objectMapper.readTree(board);
+			String username = jsonNode.get("username").asText();
+			String title = jsonNode.get("title").asText();
+			String content = jsonNode.get("content").asText();
+			String tag = jsonNode.get("tag").asText();
+			Integer bigId = jsonNode.get("bigId").asInt();
+
+			Optional<Member> opM = memRepo.findByUsername(username);
+			Optional<BigTrash> bts = bigRepo.findById(bigId);
+			Optional<String> listob = bigRepo.findNameAndCateByBigId(bigId);
+			String[] arr = listob.get().split(",");
+			String name = arr[0];
+			String cate = arr[1];
+			
+			
+			
+			if (opM.isPresent() && bts.isPresent()) {
+				B.setUsername(opM.get());
+//				System.out.println(B);
+				B.setTitle(title);
+				B.setContent(content);
+				B.setTag(tag);
+				B.setBigId(bts.get());
+				
+				map.put("name", name);
+				map.put("cate", cate);
+				map.put("bigId", B.getBigId());
+				map.put("postId", B.getPostId());
+				map.put("username", B.getUsername());
+				map.put("title", B.getTitle());
+				map.put("content", B.getContent());
+				map.put("image", B.getImage());
+				map.put("count", B.getCount());
+				map.put("tag", B.getTag());
+				map.put("createDate", B.getCreateDate());
+				boardRepo.save(B);
+				
+			} else {
+				System.out.println("일치하는 유저가 존재하지 않음");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
 		}
 		
-		@GetMapping("/nowBoard")
-		public ResponseEntity<?> getPostDetail(Integer postId, Integer bigId){
-			Map<String, List<?>> data = new HashMap<>();
-			data.put("board", boardService.getPostDetail(postId));
-			data.put("comment", CommService.getCommentByBoardSeq(postId));
-			
-			return ResponseEntity.ok().body(data);
-		}
+		return ResponseEntity.ok().body(map);
+	}
+
+	@GetMapping("/nowList")
+	public ResponseEntity<?> getBoardList(@RequestParam(required = false) String username) {
+		Page<Board> boardList = boardService.getBoardList(username);
+		return ResponseEntity.ok(boardList);
+	}
+
+	@GetMapping("/nowBoard")
+	public ResponseEntity<?> getPostDetail(Integer postId, Integer bigId) {
+		Map<String, List<?>> data = new HashMap<>();
+		data.put("board", boardService.getPostDetail(postId));
+		data.put("comment", CommService.getCommentByBoardSeq(postId));
+
+		return ResponseEntity.ok().body(data);
+	}
 }

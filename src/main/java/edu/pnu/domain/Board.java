@@ -2,6 +2,8 @@ package edu.pnu.domain;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,21 +32,18 @@ public class Board {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer postId;
-	private String username;
+	@ManyToOne
+	@JoinColumn(name = "username")
+	private Member username;
 	private String title;
 	private String content;
 	private String image;
-	private Integer count;
+	@Builder.Default
+	private Integer count = 0;
 	private String tag;
 	@ManyToOne
-	@JoinColumn(name="bigId")
+	@JoinColumn(name = "big_id")
 	private BigTrash bigId;
-	@ManyToOne
-	@JoinColumn(name="cate")
-	private BigTrash cate;
-	@ManyToOne
-	@JoinColumn(name="name")
-	private BigTrash name;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private final Date createDate = new Date();

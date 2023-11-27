@@ -1,6 +1,7 @@
 package edu.pnu.persistence;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,5 +21,7 @@ public interface BigTrashRepository extends JpaRepository<BigTrash, Integer> {
 	 @Query("SELECT c.size FROM BigTrash c WHERE c.cate LIKE %:cate% AND c.sido LIKE %:sido% AND c.name LIKE %:name%")
 	 List<String> findBySidoAndCateAndName(String cate, String sido, String name);
 //	 List<Object> findByCateAndName(String cate, String name);
+	 @Query(value = "select d.name, d.cate from bigtrash d where d.big_id = :bigId", nativeQuery = true)
+	 Optional<String> findNameAndCateByBigId(@Param("bigId") Integer bigId);
 
 }
