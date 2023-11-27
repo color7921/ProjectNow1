@@ -43,8 +43,8 @@ public class BoardController {
 					.image(board.getImage())
 					.count(board.getCount())
 					.tag(board.getTag())
-					.name(board.getName())
-					.cate(board.getCate())
+					.bigId(board.getBigId())
+					
 					
 					.build());
 			return ResponseEntity.ok().build();
@@ -57,7 +57,7 @@ public class BoardController {
 		}
 		
 		@GetMapping("/nowBoard")
-		public ResponseEntity<?> getPostDetail(Integer postId){
+		public ResponseEntity<?> getPostDetail(Integer postId, Integer bigId){
 			Map<String, List<?>> data = new HashMap<>();
 			data.put("board", boardService.getPostDetail(postId));
 			data.put("comment", CommService.getCommentByBoardSeq(postId));

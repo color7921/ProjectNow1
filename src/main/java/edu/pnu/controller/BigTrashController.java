@@ -25,15 +25,21 @@ public class BigTrashController {
 		System.out.println(test);
 	}
 	
+	//api/wastename?sido=?&cate=?
 	@GetMapping("/wastename")
-	public ResponseEntity<?> catetest(String cate){
-		return ResponseEntity.ok().body(bigTrashService.getCate(cate));
+	public ResponseEntity<?> cateTest(String cate, String sido){
+		return ResponseEntity.ok().body(bigTrashService.getCate(cate, sido));
 	}
 	  
 	@GetMapping("/search")
 	public ResponseEntity<?> test(String sido, String cate, String keyword) {
 		
 		return ResponseEntity.ok().body(bigTrashService.getBigTrash(sido, cate, keyword));
-	};
+	}
 	
+	//api/wastesize?sido=?&cate=?name=?
+	@GetMapping("/wastesize")
+	public ResponseEntity<?> nameTest(String sido, String cate, String name){
+		return ResponseEntity.ok().body(bigTrashService.getName(cate, sido, name));
+	}
 }

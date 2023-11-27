@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
@@ -34,8 +36,15 @@ public class Board {
 	private String image;
 	private Integer count;
 	private String tag;
-	private String name;
-	private String cate;
+	@ManyToOne
+	@JoinColumn(name="bigId")
+	private BigTrash bigId;
+	@ManyToOne
+	@JoinColumn(name="cate")
+	private BigTrash cate;
+	@ManyToOne
+	@JoinColumn(name="name")
+	private BigTrash name;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private final Date createDate = new Date();
