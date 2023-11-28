@@ -1,6 +1,5 @@
 package edu.pnu.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,11 @@ public class CommentService {
 	
 	public List<Comment> getCommentByBoardSeq(Integer postId){
 		return CommRepo.findByPostId(postId);
-		
-		
-		
+	}
+	public void deleteComm(Integer postId) {
+		CommRepo.deleteById(postId);
+	}
+	public void deleteComm2(Integer commentId) {
+		CommRepo.deleteById(commentId);
 	}
 }

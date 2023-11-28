@@ -30,8 +30,8 @@ public class BoardService  {
 		boardRepo.save(findBoard);
 	}
 
-	public void deleteBoard(Board board) {
-		boardRepo.deleteById(board.getPostId());
+	public void deleteBoard(Integer postId) {
+		boardRepo.deleteById(postId);
 	}
 
 	public Board getBoard(Board board) {

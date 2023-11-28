@@ -7,7 +7,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,7 @@ import edu.pnu.persistence.CommentRepository;
 import edu.pnu.persistence.MemberRepository;
 import edu.pnu.service.BoardService;
 import edu.pnu.service.CommentService;
+import jakarta.persistence.EntityManager;
 
 @RestController
 @RequestMapping("/api/user")
@@ -49,6 +52,7 @@ public class BoardController {
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, Object> map = new HashMap<>();
 
+		
 		Board B = new Board();
 		JsonNode jsonNode;
 		try {
@@ -70,7 +74,6 @@ public class BoardController {
 			
 			if (opM.isPresent() && bts.isPresent()) {
 				B.setUsername(opM.get());
-//				System.out.println(B);
 				B.setTitle(title);
 				B.setContent(content);
 				B.setTag(tag);
@@ -88,6 +91,7 @@ public class BoardController {
 				map.put("tag", B.getTag());
 				map.put("createDate", B.getCreateDate());
 				boardRepo.save(B);
+	
 				
 			} else {
 				System.out.println("일치하는 유저가 존재하지 않음");
@@ -114,5 +118,22 @@ public class BoardController {
 		data.put("comment", CommService.getCommentByBoardSeq(postId));
 
 		return ResponseEntity.ok().body(data);
+	}
+	
+	@DeleteMapping("/delBoard")
+	public ResponseEntity<?> delBoard(@RequestParam Integer postId){
+		try {
+		boardService.deleteBoard(postId);
+		CommService.deleteComm(postId);
+		return ResponseEntity.ok("게시글, 댓글 삭제 성공");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 오류");
+		}
+	}
+	
+	@DeleteMapping("/delComment")
+	public ResponseEntity<?> delComm(@RequestParam Integer commentId){
+		CommService.deleteComm(commentId);
+		return ResponseEntity.ok("댓글 삭제 성공");
 	}
 }
