@@ -1,5 +1,7 @@
 package edu.pnu.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,16 +18,21 @@ public class CommentController {
 
 	@Autowired
 	private CommentRepository commentRepo;
-	
+
 	@PostMapping("/commWrite")
-	public ResponseEntity<?> postCommList(@RequestBody Comment comment){
-		commentRepo.save(Comment.builder()
-				
-				.username(comment.getUsername())
-				.postId(comment.getPostId())
-				.commContent(comment.getCommContent())
-				.build());
-		return ResponseEntity.ok().build();
+	public ResponseEntity<?> postCommList(@RequestBody Comment comment) {
+		
+			commentRepo.save(Comment.builder()
+					.username(comment.getUsername())
+					.postId(comment.getPostId())
+					.commContent(comment.getCommContent())
+					.build());
+
+			List<Comment> comments = commentRepo.findByPostId(comment.getPostId());
+			return ResponseEntity.ok().body(comments);
+		} 
 	}
-	
-}
+//	@GetMapping("/nowComment")
+//	public ResponseEntity<?> getComm(Integer postId){
+//		
+//	}

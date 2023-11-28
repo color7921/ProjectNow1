@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.pnu.domain.BigTrash;
 import edu.pnu.domain.Comment;
 import edu.pnu.persistence.CommentRepository;
 
@@ -14,6 +15,10 @@ public class CommentService {
 	@Autowired
 	private CommentRepository CommRepo;
 	
+	public List<Comment> getAllComment(){
+		return CommRepo.findAll();
+	}
+
 	public List<Comment> getCommentByBoardSeq(Integer postId){
 		return CommRepo.findByPostId(postId);
 	}

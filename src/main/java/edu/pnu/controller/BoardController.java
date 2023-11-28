@@ -3,7 +3,6 @@ package edu.pnu.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,19 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import edu.pnu.domain.BigTrash;
 import edu.pnu.domain.Board;
-import edu.pnu.domain.Member;
+import edu.pnu.domain.Comment;
 import edu.pnu.persistence.BigTrashRepository;
 import edu.pnu.persistence.BoardRepository;
 import edu.pnu.persistence.CommentRepository;
 import edu.pnu.persistence.MemberRepository;
 import edu.pnu.service.BoardService;
 import edu.pnu.service.CommentService;
-import jakarta.persistence.EntityManager;
 
 @RestController
 @RequestMapping("/api/user")
@@ -48,10 +42,19 @@ public class BoardController {
 	private BigTrashRepository bigRepo;
 
 	@PostMapping("/nowWrite")
-	public ResponseEntity<?> postBoardList(@RequestBody String board) {
-		ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, Object> map = new HashMap<>();
+	public ResponseEntity<?> postBoardList(@RequestBody Board board) {
+		
+		boardRepo.save(Board.builder()
+				.username(board.getUsername())
+				.title(board.getTitle())
+				.content(board.getContent())
+				.image(board.getImage())
+				.tag(board.getTag())
+				.bigId(board.getBigId())
+				.build());
 
+		/*ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, Object> map = new HashMap<>();
 		
 		Board B = new Board();
 		JsonNode jsonNode;
@@ -69,8 +72,6 @@ public class BoardController {
 			String[] arr = listob.get().split(",");
 			String name = arr[0];
 			String cate = arr[1];
-			
-			
 			
 			if (opM.isPresent() && bts.isPresent()) {
 				B.setUsername(opM.get());
@@ -101,8 +102,8 @@ public class BoardController {
 
 			e.printStackTrace();
 		}
-		
-		return ResponseEntity.ok().body(map);
+		*/
+		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping("/nowList")
@@ -132,8 +133,8 @@ public class BoardController {
 	}
 	
 	@DeleteMapping("/delComment")
-	public ResponseEntity<?> delComm(@RequestParam Integer commentId){
+	public ResponseEntity<?> delComm(@RequestParam Integer commentId, Integer postId){
 		CommService.deleteComm(commentId);
-		return ResponseEntity.ok("댓글 삭제 성공");
+		return ResponseEntity.ok().body(CommService.getCommentByBoardSeq(postId));
 	}
 }

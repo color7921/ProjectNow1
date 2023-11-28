@@ -35,11 +35,4 @@ public class BigTrashService {
 		return bigTrashRepository.findBySidoAndCateAndName(cate, sido, name);
 	}
 	
-//	public List<Object> getBigId(String cate, String name){
-//		return bigTrashRepository.findByCateAndName(cate, name);
-//	}
-//	public static List<?> getBigByCateName(Integer bigId) {
-//		return null;
-//	}
-	
 }

@@ -8,6 +8,8 @@ import edu.pnu.domain.Comment;
 
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
+	
 	List<Comment> findByPostId(Integer postId);
+
 
 }
