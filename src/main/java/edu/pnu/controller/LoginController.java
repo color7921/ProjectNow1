@@ -26,7 +26,7 @@ public class LoginController {
 		System.out.println(member);
 
 		try {
-			if (memRepo.existsByUsername(member.getUsername())) {
+			if (memRepo.existsById(member.getUsername())) {
 				
 				return ResponseEntity.notFound().build();
 			} else {

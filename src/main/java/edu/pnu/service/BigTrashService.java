@@ -25,11 +25,16 @@ public class BigTrashService {
 		}
 		return bigTrashRepository.findBySidoAndCateAndNameContaining(sido, cate, keyword);
 	}
-	//데이터가 객체로 받을때(name
+	
 	public List<Object> getCate(String cate, String sido){
 	
+		if (cate.equals("전체")) {
+			return bigTrashRepository.findByNameAndSido(sido);
+		}
 		return bigTrashRepository.findDistinctByCateContaining(cate, sido);
 	}
+	
+	
 	public List<String> getName(String cate, String sido, String name) {
 	
 		return bigTrashRepository.findBySidoAndCateAndName(cate, sido, name);

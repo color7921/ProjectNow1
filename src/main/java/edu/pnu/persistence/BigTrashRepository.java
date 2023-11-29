@@ -14,6 +14,10 @@ public interface BigTrashRepository extends JpaRepository<BigTrash, Integer> {
 	 List<BigTrash> findBySidoAndCateAndNameContaining(String sido, String cate, String keyword);	
 	 List<BigTrash> findBySidoAndNameContaining(String sido, String keyword);
 	 List<BigTrash> findByNameContaining(String keyword);
+	 List<BigTrash> findBySidoAndCateAndNameAndSize(String sido, String cate, String name, String size);
+	 
+	 @Query("SELECT DISTINCT a.name FROM BigTrash a WHERE a.sido Like %:sido%")
+	 List<Object> findByNameAndSido(String sido);
 	 
 	 @Query("SELECT DISTINCT b.name FROM BigTrash b WHERE b.cate LIKE %:cate% AND b.sido LIKE %:sido%")
 	 List<Object> findDistinctByCateContaining(String cate, String sido);

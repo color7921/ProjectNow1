@@ -32,9 +32,6 @@ public class Board {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer postId;
-	@ManyToOne
-	@JoinColumn(name = "username")
-	private Member username;
 	private String title;
 	private String content;
 	private String image;
@@ -43,7 +40,10 @@ public class Board {
 	private String tag;
 	@ManyToOne
 	@JoinColumn(name = "big_id")
-	private BigTrash bigId;
+	private BigTrash bigTrash;
+	@ManyToOne
+	@JoinColumn(name = "username")
+	private Member member;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private final Date createDate = new Date();

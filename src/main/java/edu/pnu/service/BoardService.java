@@ -17,6 +17,8 @@ public class BoardService  {
 	
 	@Autowired
 	private BoardRepository boardRepo;
+//	@Autowired
+//	private BigTrashRepository trash
 	
 	public void insertBoard(Board board) {
 		boardRepo.save(board);
@@ -47,6 +49,10 @@ public class BoardService  {
 	public List<Board> getPostDetail(Integer postId){
 		List<Board> boardObjectList = boardRepo.findByPostId(postId);
 		
-		return boardRepo.findByPostId(postId);
+		return boardObjectList;
 	}
+	
+//	public getBigId(String sido, String cate, String name, String size) {
+//		return bigRfindBySidoAndCateAndNameAndSize
+//	}
 }

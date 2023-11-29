@@ -58,9 +58,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		// 인증 결과 생성된 Authentication 객체에서 필요한 정보를 읽어서 토큰을 만들어서 헤더에 추가한다.
 		User user = (User) authResult.getPrincipal();
 		String token = JWT.create()
-				.withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 10))
+				.withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60*24))
 				.withClaim("username", user.getUsername())
 				.sign(Algorithm.HMAC256("edu.pnu.jwt"));
+
 		response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 		response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");

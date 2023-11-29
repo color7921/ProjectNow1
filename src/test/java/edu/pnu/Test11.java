@@ -29,7 +29,7 @@ public class Test11 {
 		 if (optionalBoard.isPresent()) {
 			 Board findBoard = optionalBoard.get();
 			 System.out.println("[ " + findBoard.getPostId() + " ]");
-			 System.out.println("제목" + findBoard.getUsername());
+//			 System.out.println("제목" + findBoard.getUsername());
 			 
 		 }else {
 			 System.out.println("찾을 수 없음");

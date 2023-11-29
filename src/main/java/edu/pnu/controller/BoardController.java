@@ -1,11 +1,13 @@
 package edu.pnu.controller;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.pnu.domain.BigTrash;
 import edu.pnu.domain.Board;
+import edu.pnu.domain.Member;
+import edu.pnu.domain.dto.BigTrashRequestDto;
 import edu.pnu.persistence.BigTrashRepository;
 import edu.pnu.persistence.BoardRepository;
 import edu.pnu.persistence.CommentRepository;
@@ -41,18 +45,24 @@ public class BoardController {
 
 
 	@PostMapping("/nowWrite")
-	public ResponseEntity<?> postBoardList(@RequestBody Board board) {
-
-		 
+	public ResponseEntity<?> postBoardList(@RequestBody BigTrashRequestDto bigTrashRequestDto, @AuthenticationPrincipal User user) {
+		List<BigTrash> bigTrash = bigRepo.findBySidoAndCateAndNameAndSize(bigTrashRequestDto.getSido(), bigTrashRequestDto.getCate(), bigTrashRequestDto.getName(), bigTrashRequestDto.getSize());
+		
+		String name = user.getUsername();
+		
+		Member member = memRepo.findById(name).get();
+		
 		boardRepo.save(Board.builder()
-				.username(board.getUsername())
-				.title(board.getTitle())
-				.content(board.getContent())
-				.image(board.getImage())
-				.tag(board.getTag())
-				.bigId(board.getBigId())
-				.build());
- 
+				.member(member)
+				.title(bigTrashRequestDto.getTitle())
+				.content(bigTrashRequestDto.getContent())
+				.image(bigTrashRequestDto.getImage())
+				.tag(bigTrashRequestDto.getTag())
+				.bigTrash(bigTrash.get(0))
+				.build()); 
+		return ResponseEntity.ok().build();
+	}
+  
 		/*ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, Object> map = new HashMap<>();
 		
@@ -78,6 +88,7 @@ public class BoardController {
 				B.setUsername(opM.get());
 				B.setTitle(title);
 				B.setContent(content);
+				B.setImage(image);
 				B.setTag(tag);
 				B.setBigId(bts.get());
 				
@@ -104,31 +115,31 @@ public class BoardController {
 			e.printStackTrace();
 		}
 		*/
-		return ResponseEntity.ok().build();
-	}
-
-	//게시글 목록 출력
+		
+	
+	//게시글 목록 출력 [ o ]
 	@GetMapping("/nowList")
 	public ResponseEntity<?> getBoardList(@RequestParam(required = false) String username) {
 		Page<Board> boardList = boardService.getBoardList(username);
 		return ResponseEntity.ok(boardList);
 	}
 
-	// 댓글 받아오기 /api/user/nowComment?postId=?
+	//check
+	// 댓글 받아오기 /api/user/nowComment?postId=? [ o ]
 	@GetMapping("/nowComment")
-	public ResponseEntity<?> getComment(Integer postId){
+	public ResponseEntity<?> getComment(Board board){
 		
-		return ResponseEntity.ok().body(CommService.getCommentByBoardSeq(postId));
+		return ResponseEntity.ok().body(CommService.getCommentByBoardSeq(board));
 	}
 	
-	// 게시글 상세정보 받아오기 /api/user/nowBoard?postId=?
+	// 게시글 상세정보 받아오기 /api/user/nowBoard?postId=? [ o ]
 	@GetMapping("/nowBoard")
 	public ResponseEntity<?> getPostDetail(Integer postId, Integer bigId) {
 	
 		return ResponseEntity.ok().body(boardService.getPostDetail(postId));
 	}
 	
-	//게시글을 삭제하면 댓글도 같이 삭제
+	//게시글을 삭제하면 댓글도 같이 삭제 /api/user/delBoard?postId=? [ o ]
 	@DeleteMapping("/delBoard")
 	public ResponseEntity<?> delBoard(@RequestParam Integer postId){
 		try {
@@ -140,10 +151,10 @@ public class BoardController {
 		}
 	}
 	
-	//댓글 삭제
+	//댓글 삭제 /api/user/delComment?commentId=? [ o ]
 	@DeleteMapping("/delComment")
-	public ResponseEntity<?> delComm(@RequestParam Integer commentId, Integer postId){
+	public ResponseEntity<?> delComm(@RequestParam Integer commentId, Board board){
 		CommService.deleteComm(commentId);
-		return ResponseEntity.ok().body(CommService.getCommentByBoardSeq(postId));
+		return ResponseEntity.ok().body(CommService.getCommentByBoardSeq(board));
 	}
 }

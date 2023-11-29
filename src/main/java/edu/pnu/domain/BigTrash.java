@@ -22,8 +22,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "bigtrash")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "bigId")
-@JsonIdentityReference(alwaysAsId = true)
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "bigId")
+//@JsonIdentityReference(alwaysAsId = true)
 public class BigTrash {
 	@Id
 	private Integer bigId;
