@@ -1,8 +1,6 @@
 package edu.pnu.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.pnu.domain.BigTrash;
 import edu.pnu.domain.Board;
-import edu.pnu.domain.Comment;
 import edu.pnu.persistence.BigTrashRepository;
 import edu.pnu.persistence.BoardRepository;
 import edu.pnu.persistence.CommentRepository;
@@ -41,9 +39,11 @@ public class BoardController {
 	@Autowired
 	private BigTrashRepository bigRepo;
 
+
 	@PostMapping("/nowWrite")
 	public ResponseEntity<?> postBoardList(@RequestBody Board board) {
-		
+
+		 
 		boardRepo.save(Board.builder()
 				.username(board.getUsername())
 				.title(board.getTitle())
@@ -52,13 +52,14 @@ public class BoardController {
 				.tag(board.getTag())
 				.bigId(board.getBigId())
 				.build());
-
+ 
 		/*ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, Object> map = new HashMap<>();
 		
 		Board B = new Board();
 		JsonNode jsonNode;
 		try {
+			//board -> requestBody 수정함, 위 매개변수도 Board board 에서 수정 (틀릴수도 있음 )
 			jsonNode = objectMapper.readTree(board);
 			String username = jsonNode.get("username").asText();
 			String title = jsonNode.get("title").asText();
@@ -93,7 +94,7 @@ public class BoardController {
 				map.put("createDate", B.getCreateDate());
 				boardRepo.save(B);
 	
-				
+				return ResponseEntity.ok().body(map);
 			} else {
 				System.out.println("일치하는 유저가 존재하지 않음");
 			}
@@ -106,21 +107,28 @@ public class BoardController {
 		return ResponseEntity.ok().build();
 	}
 
+	//게시글 목록 출력
 	@GetMapping("/nowList")
 	public ResponseEntity<?> getBoardList(@RequestParam(required = false) String username) {
 		Page<Board> boardList = boardService.getBoardList(username);
 		return ResponseEntity.ok(boardList);
 	}
 
-	@GetMapping("/nowBoard")
-	public ResponseEntity<?> getPostDetail(Integer postId, Integer bigId) {
-		Map<String, List<?>> data = new HashMap<>();
-		data.put("board", boardService.getPostDetail(postId));
-		data.put("comment", CommService.getCommentByBoardSeq(postId));
-
-		return ResponseEntity.ok().body(data);
+	// 댓글 받아오기 /api/user/nowComment?postId=?
+	@GetMapping("/nowComment")
+	public ResponseEntity<?> getComment(Integer postId){
+		
+		return ResponseEntity.ok().body(CommService.getCommentByBoardSeq(postId));
 	}
 	
+	// 게시글 상세정보 받아오기 /api/user/nowBoard?postId=?
+	@GetMapping("/nowBoard")
+	public ResponseEntity<?> getPostDetail(Integer postId, Integer bigId) {
+	
+		return ResponseEntity.ok().body(boardService.getPostDetail(postId));
+	}
+	
+	//게시글을 삭제하면 댓글도 같이 삭제
 	@DeleteMapping("/delBoard")
 	public ResponseEntity<?> delBoard(@RequestParam Integer postId){
 		try {
@@ -132,6 +140,7 @@ public class BoardController {
 		}
 	}
 	
+	//댓글 삭제
 	@DeleteMapping("/delComment")
 	public ResponseEntity<?> delComm(@RequestParam Integer commentId, Integer postId){
 		CommService.deleteComm(commentId);

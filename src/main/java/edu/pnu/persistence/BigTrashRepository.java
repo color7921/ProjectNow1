@@ -21,7 +21,9 @@ public interface BigTrashRepository extends JpaRepository<BigTrash, Integer> {
 	 @Query("SELECT c.size FROM BigTrash c WHERE c.cate LIKE %:cate% AND c.sido LIKE %:sido% AND c.name LIKE %:name%")
 	 List<String> findBySidoAndCateAndName(String cate, String sido, String name);
 //	 List<Object> findByCateAndName(String cate, String name);
+
 	 
+//	 @Query(value = "SELECT d.cate, d.size FROM bigtrash d WHERE d.bigId = :bigID")
 //	 @Query(value = "SELECT d.bigId FROM bigtrash d WHERE d.sido = :sido AND d.cate = :cate AND d.name = :name AND d.size = :size", nativeQuery = true)
 //	 Optional<String> findNameAndCateByBigId(@Param("bigId") Integer bigId);
 
