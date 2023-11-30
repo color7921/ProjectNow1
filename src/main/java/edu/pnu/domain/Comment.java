@@ -30,6 +30,7 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer commentId;
 	private String commContent;
+	
 	@ManyToOne
 	@JoinColumn(name = "username")
 	private Member member;

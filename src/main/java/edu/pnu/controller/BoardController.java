@@ -1,6 +1,7 @@
 package edu.pnu.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,8 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.pnu.domain.BigTrash;
 import edu.pnu.domain.Board;
+import edu.pnu.domain.Comment;
 import edu.pnu.domain.Member;
 import edu.pnu.domain.dto.BigTrashRequestDto;
+import edu.pnu.domain.dto.BoardUpadateRequestDto;
+import edu.pnu.domain.dto.CommentUpdateDto;
 import edu.pnu.persistence.BigTrashRepository;
 import edu.pnu.persistence.BoardRepository;
 import edu.pnu.persistence.CommentRepository;
@@ -44,6 +49,7 @@ public class BoardController {
 	private BigTrashRepository bigRepo;
 
 
+	//게시글 등록 localhost:8080/api/user/nowWrite [ o ] 
 	@PostMapping("/nowWrite")
 	public ResponseEntity<?> postBoardList(@RequestBody BigTrashRequestDto bigTrashRequestDto, @AuthenticationPrincipal User user) {
 		List<BigTrash> bigTrash = bigRepo.findBySidoAndCateAndNameAndSize(bigTrashRequestDto.getSido(), bigTrashRequestDto.getCate(), bigTrashRequestDto.getName(), bigTrashRequestDto.getSize());
@@ -62,60 +68,7 @@ public class BoardController {
 				.build()); 
 		return ResponseEntity.ok().build();
 	}
-  
-		/*ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, Object> map = new HashMap<>();
-		
-		Board B = new Board();
-		JsonNode jsonNode;
-		try {
-			//board -> requestBody 수정함, 위 매개변수도 Board board 에서 수정 (틀릴수도 있음 )
-			jsonNode = objectMapper.readTree(board);
-			String username = jsonNode.get("username").asText();
-			String title = jsonNode.get("title").asText();
-			String content = jsonNode.get("content").asText();
-			String tag = jsonNode.get("tag").asText();
-			Integer bigId = jsonNode.get("bigId").asInt();
 
-			Optional<Member> opM = memRepo.findByUsername(username);
-			Optional<BigTrash> bts = bigRepo.findById(bigId);
-			Optional<String> listob = bigRepo.findNameAndCateByBigId(bigId);
-			String[] arr = listob.get().split(",");
-			String name = arr[0];
-			String cate = arr[1];
-			
-			if (opM.isPresent() && bts.isPresent()) {
-				B.setUsername(opM.get());
-				B.setTitle(title);
-				B.setContent(content);
-				B.setImage(image);
-				B.setTag(tag);
-				B.setBigId(bts.get());
-				
-				map.put("name", name);
-				map.put("cate", cate);
-				map.put("bigId", B.getBigId());
-				map.put("postId", B.getPostId());
-				map.put("username", B.getUsername());
-				map.put("title", B.getTitle());
-				map.put("content", B.getContent());
-				map.put("image", B.getImage());
-				map.put("count", B.getCount());
-				map.put("tag", B.getTag());
-				map.put("createDate", B.getCreateDate());
-				boardRepo.save(B);
-	
-				return ResponseEntity.ok().body(map);
-			} else {
-				System.out.println("일치하는 유저가 존재하지 않음");
-			}
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-		*/
-		
 	
 	//게시글 목록 출력 [ o ]
 	@GetMapping("/nowList")
@@ -124,7 +77,7 @@ public class BoardController {
 		return ResponseEntity.ok(boardList);
 	}
 
-	//check
+	
 	// 댓글 받아오기 /api/user/nowComment?postId=? [ o ]
 	@GetMapping("/nowComment")
 	public ResponseEntity<?> getComment(Board board){
@@ -138,6 +91,45 @@ public class BoardController {
 	
 		return ResponseEntity.ok().body(boardService.getPostDetail(postId));
 	}
+	
+	// 게시글 수정하기 localhost:8080/api/user/updateNow [ o ]
+	@PutMapping("/updateNow")
+	public ResponseEntity<?> updateBoard(@RequestBody BoardUpadateRequestDto boardUpdateDto){
+	
+		Optional<Board> existingBoard = boardRepo.findById(boardUpdateDto.getPostId());
+		
+		if (existingBoard.isPresent()) {
+			Board updatedBoard = existingBoard.get();
+			updatedBoard.setTitle(boardUpdateDto.getTitle());
+			updatedBoard.setContent(boardUpdateDto.getContent());
+			updatedBoard.setTag(boardUpdateDto.getTag());
+			boardRepo.save(updatedBoard);
+			return ResponseEntity.ok().build(); 
+			
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+				
+
+	// 댓글 수정하기 localhost:8080/api/user/updateComment [ o ]
+	@PutMapping("/updateComment")
+	public ResponseEntity<?> updateComment(@RequestBody CommentUpdateDto commentUpdateDto){
+		
+		 Optional<Comment> existingComment = commRepo.findById(commentUpdateDto.getCommentId());
+		 
+		 if (existingComment.isPresent()) {
+			 Comment updatedComment = existingComment.get();
+			 updatedComment.setCommContent(commentUpdateDto.getCommContent());
+			 commRepo.save(updatedComment);
+			 return ResponseEntity.ok().build();
+		 
+		
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
 	
 	//게시글을 삭제하면 댓글도 같이 삭제 /api/user/delBoard?postId=? [ o ]
 	@DeleteMapping("/delBoard")
