@@ -31,9 +31,6 @@ public class BigTrashDetailsService implements UserDetailsService {
 		Member member = memRepo.findById(username).orElseThrow(()->
 		new UsernameNotFoundException("Not Found!"));
 
-//		Member member = option.get();
-		System.out.println(member);
-		
 		// UserDetails 타입의 객체를 생성해서 리턴
 		return new User(member.getUsername(), member.getPassword(),
 				AuthorityUtils.createAuthorityList(member.getUsername().toString()));

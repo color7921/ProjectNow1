@@ -48,9 +48,23 @@ public class BoardController {
 	@Autowired
 	private BigTrashRepository bigRepo;
 
+	// 게시글 목록 출력 /api/user/nowList [ o ]
+		@GetMapping("/nowList")
+		public ResponseEntity<?> getBoardList(@RequestParam(required = false) String username) {
+			List<Board> boardList = boardService.getBoardList(username);
+			return ResponseEntity.ok(boardList);
+		}
+		
+	// 게시글 목록 출력 (page 버전)
+//		@GetMapping("/nowList")
+//		public ResponseEntity<?> getBoardList(@RequestParam(required = false) String username) {
+//			Page<Board> boardList = boardService.getBoardList(username);
+//			return ResponseEntity.ok(boardList);
+//		}
 
-	//게시글 등록 localhost:8080/api/user/nowWrite [ o ] 
+	// 게시글 등록 /api/user/nowWrite [ o ] 
 	@PostMapping("/nowWrite")
+	//requestbody - > multipart
 	public ResponseEntity<?> postBoardList(@RequestBody BigTrashRequestDto bigTrashRequestDto, @AuthenticationPrincipal User user) {
 		List<BigTrash> bigTrash = bigRepo.findBySidoAndCateAndNameAndSize(bigTrashRequestDto.getSido(), bigTrashRequestDto.getCate(), bigTrashRequestDto.getName(), bigTrashRequestDto.getSize());
 		
@@ -58,6 +72,7 @@ public class BoardController {
 		
 		Member member = memRepo.findById(name).get();
 		
+		// Board.builder : 생성 (update에 사용 x)
 		boardRepo.save(Board.builder()
 				.member(member)
 				.title(bigTrashRequestDto.getTitle())
@@ -68,28 +83,30 @@ public class BoardController {
 				.build()); 
 		return ResponseEntity.ok().build();
 	}
-
 	
-	//게시글 목록 출력 [ o ]
-	@GetMapping("/nowList")
-	public ResponseEntity<?> getBoardList(@RequestParam(required = false) String username) {
-		Page<Board> boardList = boardService.getBoardList(username);
-		return ResponseEntity.ok(boardList);
+	//#######################################################################################
+	
+	// # 현재 진행중 ing ..
+	// 게시글 목록에서 키워드 보내기 /api/user/nowListSearch?keyword=? [ keyword == null 일 때 확인 ]
+	@GetMapping("/nowListSearch")
+	public ResponseEntity<?> getBoardKeyword(String keyword, Integer postId){
+		return ResponseEntity.ok().body(boardService.getBoardKeyword(keyword, postId));
 	}
-
 	
-	// 댓글 받아오기 /api/user/nowComment?postId=? [ o ]
+	//#######################################################################################
+	
+	// 게시글 상세정보 보내기 /api/user/nowBoard?postId=? [ o ]
+		@GetMapping("/nowBoard")
+		public ResponseEntity<?> getPostDetail(Integer postId, Integer bigId) {
+		
+			return ResponseEntity.ok().body(boardService.getPostDetail(postId));
+	}
+		
+	// 댓글 보내기 /api/user/nowComment?postId=? [ o ]
 	@GetMapping("/nowComment")
 	public ResponseEntity<?> getComment(Board board){
 		
 		return ResponseEntity.ok().body(CommService.getCommentByBoardSeq(board));
-	}
-	
-	// 게시글 상세정보 받아오기 /api/user/nowBoard?postId=? [ o ]
-	@GetMapping("/nowBoard")
-	public ResponseEntity<?> getPostDetail(Integer postId, Integer bigId) {
-	
-		return ResponseEntity.ok().body(boardService.getPostDetail(postId));
 	}
 	
 	// 게시글 수정하기 localhost:8080/api/user/updateNow [ o ]
@@ -111,27 +128,28 @@ public class BoardController {
 		}
 	}
 				
-
 	// 댓글 수정하기 localhost:8080/api/user/updateComment [ o ]
 	@PutMapping("/updateComment")
 	public ResponseEntity<?> updateComment(@RequestBody CommentUpdateDto commentUpdateDto){
 		
+		 List<Board> boardName = boardRepo.findByPostId(commentUpdateDto.getPostId());
 		 Optional<Comment> existingComment = commRepo.findById(commentUpdateDto.getCommentId());
 		 
 		 if (existingComment.isPresent()) {
 			 Comment updatedComment = existingComment.get();
 			 updatedComment.setCommContent(commentUpdateDto.getCommContent());
 			 commRepo.save(updatedComment);
-			 return ResponseEntity.ok().build();
+			 
+			 List<Comment> partCommentList = commRepo.findByBoard(boardName.get(0));
+			 return ResponseEntity.ok().body(partCommentList);
 		 
 		
 		} else {
 			return ResponseEntity.notFound().build();
 		}
 	}
-
 	
-	//게시글을 삭제하면 댓글도 같이 삭제 /api/user/delBoard?postId=? [ o ]
+	// 게시글을 삭제하면 댓글도 같이 삭제 /api/user/delBoard?postId=? [ o ]
 	@DeleteMapping("/delBoard")
 	public ResponseEntity<?> delBoard(@RequestParam Integer postId){
 		try {
@@ -143,7 +161,7 @@ public class BoardController {
 		}
 	}
 	
-	//댓글 삭제 /api/user/delComment?commentId=? [ o ]
+	// 댓글 삭제 /api/user/delComment?commentId=? [ o ]
 	@DeleteMapping("/delComment")
 	public ResponseEntity<?> delComm(@RequestParam Integer commentId, Board board){
 		CommService.deleteComm(commentId);

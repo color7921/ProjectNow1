@@ -15,4 +15,5 @@ public class CommentUpdateDto {
 
 	private Integer commentId;
 	private String commContent;
+	private Integer postId;
 }

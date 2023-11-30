@@ -48,15 +48,4 @@ public class Board {
 	@Temporal(TemporalType.TIMESTAMP)
 	private final Date createDate = new Date();
 	
-//	@PrePersist
-//	public void prePersist() {
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//		String formattedDate = dateFormat.format(createDate);
-//		try {
-//			this.createDate = dateFormat.parse(formattedDate);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
 }

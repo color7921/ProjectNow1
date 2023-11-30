@@ -18,6 +18,8 @@ public class BigTrashService {
 		return bigTrashRepository.findAll();
 		
 	}
+	
+	// 1. 
 	public List<BigTrash> getBigTrash(String sido, String cate, String keyword){
 		
 		if (cate.equals("전체")) {
@@ -26,6 +28,7 @@ public class BigTrashService {
 		return bigTrashRepository.findBySidoAndCateAndNameContaining(sido, cate, keyword);
 	}
 	
+	// 2. 
 	public List<Object> getCate(String cate, String sido){
 	
 		if (cate.equals("전체")) {
@@ -34,9 +37,8 @@ public class BigTrashService {
 		return bigTrashRepository.findDistinctByCateContaining(cate, sido);
 	}
 	
-	
+	// 3.
 	public List<String> getName(String cate, String sido, String name) {
-	
 		return bigTrashRepository.findBySidoAndCateAndName(cate, sido, name);
 	}
 	

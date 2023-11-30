@@ -15,17 +15,17 @@ public class CommentService {
 	@Autowired
 	private CommentRepository CommRepo;
 	
-	public List<Comment> getAllComment(){
-		return CommRepo.findAll();
-	}
+//	public List<Comment> getAllComment(){
+//		return CommRepo.findAll();
+//	}
 
+	// BoardController의 댓글 삭제
 	public List<Comment> getCommentByBoardSeq(Board board){
 		return CommRepo.findByBoard(board);
 	}
+	// 위와 상동
 	public void deleteComm(Integer postId) {
 		CommRepo.deleteById(postId);
 	}
-	public void deleteComm2(Integer commentId) {
-		CommRepo.deleteById(commentId);
-	}
+
 }

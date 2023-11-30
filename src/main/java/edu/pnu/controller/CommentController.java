@@ -41,6 +41,7 @@ public class CommentController {
 					.commContent(commDto.getCommContent())
 					.build());
 
+			
 			//ManyToOne fetch 옵션 FetchType.EAGER 기본값으로 설정되어 Comment 엔티티 조회 시 무조건 Post 객체를 가져옴
 			List<Comment> comments = commentRepo.findByBoard(boardName.get(0));
 			return ResponseEntity.ok().body(comments);
