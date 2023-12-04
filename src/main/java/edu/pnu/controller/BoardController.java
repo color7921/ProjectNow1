@@ -84,16 +84,18 @@ public class BoardController {
 		return ResponseEntity.ok().build();
 	}
 	
-	//#######################################################################################
+	// username에 해당하는 상세 게시글 보내기
+	@GetMapping("/mypage")
+	public ResponseEntity<?> getUsernameList(String username){
+		return ResponseEntity.ok().body(boardService.getUsernameList(username));
+	}
 	
-	// # 현재 진행중 ing ..
 	// 게시글 목록에서 키워드 보내기 /api/user/nowListSearch?keyword=? [ keyword == null 일 때 확인 ]
 	@GetMapping("/nowListSearch")
 	public ResponseEntity<?> getBoardKeyword(String keyword, Integer postId){
 		return ResponseEntity.ok().body(boardService.getBoardKeyword(keyword, postId));
 	}
 	
-	//#######################################################################################
 	
 	// 게시글 상세정보 보내기 /api/user/nowBoard?postId=? [ o ]
 		@GetMapping("/nowBoard")

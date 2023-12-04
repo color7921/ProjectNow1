@@ -49,6 +49,13 @@ public class BoardService  {
 		List<Board> boardObjectList = boardRepo.findByPostId(postId);
 		return boardObjectList;
 	}
+	
+	// 특정 유저가 쓴 게시글 전부 보내기
+	public List<Board> getUsernameList(String username){
+		
+		List<Board> usernameList = boardRepo.findByMemberUsername(username);
+		return usernameList;
+	}
 		
 	// 게시글 수정
 	public void updateBoard(Board board) {
