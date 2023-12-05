@@ -19,7 +19,7 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 	
 	// username에 해당하는 모든 레코드 찾기
 	List<Board> findByMemberUsername(String username);
-	
+
 	
 	// 쿼리를 작성하고 게시글을 클릭했을 때 조회수 증가하는 방법
 	// update/delete 메서드 실행시 DB의 동일성을 유지하기위해 @Transactional 어노테이션을 사용한다

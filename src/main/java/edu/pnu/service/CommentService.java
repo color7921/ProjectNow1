@@ -27,5 +27,10 @@ public class CommentService {
 	public void deleteComm(Integer postId) {
 		CommRepo.deleteById(postId);
 	}
+	
+	// Member의 사용자가 썼던 Comment를 불러오기
+	public List<Comment> getCommentByUsernameList(String username){
+		return CommRepo.findByMemberUsername(username);
+	}
 
 }

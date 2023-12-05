@@ -23,6 +23,7 @@ import edu.pnu.domain.Board;
 import edu.pnu.domain.Comment;
 import edu.pnu.domain.Member;
 import edu.pnu.domain.dto.BigTrashRequestDto;
+import edu.pnu.domain.dto.BoardCommentListDto;
 import edu.pnu.domain.dto.BoardUpadateRequestDto;
 import edu.pnu.domain.dto.CommentUpdateDto;
 import edu.pnu.persistence.BigTrashRepository;
@@ -49,18 +50,18 @@ public class BoardController {
 	private BigTrashRepository bigRepo;
 
 	// 게시글 목록 출력 /api/user/nowList [ o ]
-		@GetMapping("/nowList")
-		public ResponseEntity<?> getBoardList(@RequestParam(required = false) String username) {
-			List<Board> boardList = boardService.getBoardList(username);
-			return ResponseEntity.ok(boardList);
-		}
-		
-	// 게시글 목록 출력 (page 버전)
 //		@GetMapping("/nowList")
 //		public ResponseEntity<?> getBoardList(@RequestParam(required = false) String username) {
-//			Page<Board> boardList = boardService.getBoardList(username);
+//			List<Board> boardList = boardService.getBoardList(username);
 //			return ResponseEntity.ok(boardList);
 //		}
+		
+	// 게시글 목록 출력 /api/user/nowList [ o ] (page 버전)
+		@GetMapping("/nowList")
+		public ResponseEntity<?> getBoardList(@RequestParam(required = false) Integer pageNo) {
+			Page<Board> boardList = boardService.getBoardList(pageNo);
+			return ResponseEntity.ok(boardList);
+		}
 
 	// 게시글 등록 /api/user/nowWrite [ o ] 
 	@PostMapping("/nowWrite")
@@ -84,10 +85,11 @@ public class BoardController {
 		return ResponseEntity.ok().build();
 	}
 	
-	// username에 해당하는 상세 게시글 보내기
+	// username에 해당하는 상세 게시글 및 댓글 보내기 [MyPage 작성]
 	@GetMapping("/mypage")
 	public ResponseEntity<?> getUsernameList(String username){
-		return ResponseEntity.ok().body(boardService.getUsernameList(username));
+		
+		return ResponseEntity.ok().body(new BoardCommentListDto(boardService.getUsernameList(username), CommService.getCommentByUsernameList(username)));
 	}
 	
 	// 게시글 목록에서 키워드 보내기 /api/user/nowListSearch?keyword=? [ keyword == null 일 때 확인 ]

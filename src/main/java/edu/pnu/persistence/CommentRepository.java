@@ -10,5 +10,6 @@ import edu.pnu.domain.Comment;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 	
 	List<Comment> findByBoard(Board board);
+	List<Comment> findByMemberUsername(String username);
 	
 }

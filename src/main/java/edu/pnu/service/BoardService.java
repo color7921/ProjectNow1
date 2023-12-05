@@ -18,18 +18,18 @@ public class BoardService  {
 	@Autowired
 	private BoardRepository boardRepo;
 
-	// 게시글 목록 출력
-	public List<Board> getBoardList(String username) {
-		List<Board> boardList = boardRepo.findAll();
-		return boardList;
-	}
+	// 게시글 목록 출력 (다 보여주는 버전)
+//	public List<Board> getBoardList(String username) {
+//		List<Board> boardList = boardRepo.findAll();
+//		return boardList;
+//	}
 
 	// 게시글 목록 출력 (page 버전)
-//	public Page<Board> getBoardList(String username) {
-//		Pageable pageable = PageRequest.of(0, 25, Sort.Direction.DESC, "PostId");
-//		Page<Board> pageList = boardRepo.findAll(pageable);
-//		return pageList;
-//	}
+	public Page<Board> getBoardList(Integer pageNo) {
+		Pageable pageable = PageRequest.of(pageNo - 1, 15, Sort.Direction.DESC, "PostId");
+		Page<Board> pageList = boardRepo.findAll(pageable);
+		return pageList;
+	}
 	
 	// 게시판 목록에서 키워드에 해당하는 게시글 보내기
 		public List<Board> getBoardKeyword(String keyword, Integer postId){
