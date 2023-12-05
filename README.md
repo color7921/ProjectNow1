@@ -24,7 +24,7 @@
 # 개발 일지
 ---
 <details>
-  <summary>## 2023.11.14 ~ 2023.12.13</summary>
+  <summary style="font-size: 1.5em;">2023.11.14 ~ 2023.12.13</summary>
   <p><span style="font-size: larger;"><1주차></span></p>
   <p>- [방향성 설정] 메인 화면, 로그인 화면 구성</p>
   <p>- Rest API 상세 목록 작성</p>
