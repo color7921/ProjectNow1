@@ -14,7 +14,7 @@
 # 팀소개
 |담당|이름|github|
 |------|---|---|
-|FE|김혜정|https://github.com/maejyomi/WasteNow-front|
+|FE|김혜정|https://github.com/maejyomi/WasteNow-front      |
 
 
 |담당|이름|github|
