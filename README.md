@@ -21,12 +21,13 @@
 ---
 <details>
   <summary style="font-size: 1.5em;">2023.11.14 ~ 2023.12.13 [click!] ◀</summary>
+  <div>
   <p><span style="font-size: larger;"><1주차></span></p>
   <p>- [방향성 설정] 메인 화면, 로그인 화면 구성</p>
   <p>- Rest API 상세 목록 작성</p>
   <p>- [데이터 삽입]csv파일 데이터를 MYSQL로 Import하기, React & SpringBoot local 연결</p>
   <p>- [API 전송]리액트에서 지정된 값을 받고 MySQL에 저장된 지정값을 API 주소를 통해 리액트로 전송</p>
-  <div></div>
+  </div>
   <p><span style="font-size: larger;"><2주차></span></p>
   <p>- 게시판, 댓글 데이터베이스 컬럼명 지정하기, 로그인, 로그아웃, 회원가입(중복 ID제거)</p>
   <p>- 쿼리 중복 제거</p>
@@ -51,6 +52,7 @@
   <summary style="font-size: 1.5em;">실패 기록 [click!] ◀</summary>
   <p><span></span></p>
   </details>
+  
 # 사용 기술
 ---
 
