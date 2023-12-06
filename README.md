@@ -50,13 +50,13 @@
 </details>
 
 <details>
-  <summary style="font-size: 1.5em;">실패 -> 깨달음 기록 [click!] ◀</summary>
+  <summary style="font-size: 1.5em;">이슈 기록 [click!] ◀</summary>
   <p>[외래키 설정]</p>
   <p>ManyToOne fetch 옵션 FetchType.EAGER 기본값으로 설정되어 Comment 엔티티 조회 시 무조건 Post 객체를 가져옴</p>
   <p>[SpringBoot와 MySQL 표기법]</p>
   <p>SpringBoot에서 boardList라는 컬럼을 입력하면 MySQL에서는 board_List로 출력된다. Camel Case -> Snake Case</p>
-  <p>[ResponseEntity]</p>
-  <p>ResponseEntity"<?>"일 때 "<?>"는 모든 타입을 받겠다</p>
+  <p>[Cors]</p>
+  <p>SecurityConfig 클래스의 requestMatchers(new AntPathRequestMatcher("/api/user/**")) 추가 후 문제 해결</p>
 </details>
   
 # 사용 기술
