@@ -12,6 +12,7 @@
 - ERD
 
 # 팀소개
+---
 |담당|이름|github|
 |------|---|---|
 |FE|김혜정|https://github.com/maejyomi/WasteNow-front|
@@ -48,17 +49,29 @@
   <p><span style="font-size: larger;"><5주차></span></p>
 </details>
 
-  <details>
-  <summary style="font-size: 1.5em;">실패 기록 [click!] ◀</summary>
-  <p><span></span></p>
-  </details>
+<details>
+  <summary style="font-size: 1.5em;">실패 -> 깨달음 기록 [click!] ◀</summary>
+  <p>[외래키 설정]</p>
+  <p>ManyToOne fetch 옵션 FetchType.EAGER 기본값으로 설정되어 Comment 엔티티 조회 시 무조건 Post 객체를 가져옴</p>
+  <p>[SpringBoot와 MySQL 표기법]</p>
+  <p>SpringBoot에서 boardList라는 컬럼을 입력하면 MySQL에서는 board_List로 출력된다. Camel Case -> Snake Case</p>
+  <p>[ResponseEntity]</p>
+  <p>ResponseEntity<?>일 때 <?>는 모든 타입을 받겠다</p>
+</details>
   
 # 사용 기술
 ---
 
 # 구현 기능
 ---
-
+|기능|설명|
+|------|---|
+|로그인, 회원가입|PostMapping으로 회원 정보를 저장 후, 로그인 기능 구현|
+|수수료 검색|원하는 지역을 설정, 버리고자 하는 폐기물 선택, 검색어 입력을 하면 지역별 폐기물의 수수료를 알려주는 정보창 구현|
+|게시글 목록, 게시글 작성, 게시글 수정, 게시글 삭제, 게시글 검색|게시글 CRUD 구현|
+|댓글 작성, 댓글 삭제, 댓글 수정|댓글 CRUD 구현|
+|마이페이지|마이페이지를 클릭하면 내가 쓴 게시글과 댓글 리스트 출력|
+|조회수, 페이징처리|게시글 상세 페이지를 클릭할 때마다 조회수 상승, 게시글 리스트 페이징 처리|
 # Rest API
 ---
 
