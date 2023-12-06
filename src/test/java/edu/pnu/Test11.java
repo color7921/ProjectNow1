@@ -20,16 +20,16 @@ public class Test11 {
 	@Autowired
 	BoardRepository boardRepository;
 	
-	@Autowired
-	BoardService boardService;
+//	@Autowired
+//	BoardService boardService;
 	//@Test는 매개변수를 가질 수 없음
-	 @Test
-	 public void testGetBoard() {
-		List<Board> list = boardService.getBoardList(null);
-		list.forEach(b -> {
-				b.setImage(null);
-				System.out.println(b);
-			}
-		);
-	}
+//	 @Test
+//	 public void testGetBoard() {
+//		List<Board> list = boardService.getBoardList(null);
+//		list.forEach(b -> {
+//				b.setImage(null);
+//				System.out.println(b);
+//			}
+//		);
+//	}
 }

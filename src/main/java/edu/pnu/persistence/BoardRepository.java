@@ -14,7 +14,7 @@ import edu.pnu.domain.Board;
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
 	// BoardService의 getBoardKeyword 메서드에 활용
-	List<Board> findByTitleContaining(String keyword);
+	List<Board> findByTitleContainingOrderByPostIdDesc(String keyword);
 	List<Board> findByPostId(Integer postId);
 	
 	// username에 해당하는 모든 레코드 찾기

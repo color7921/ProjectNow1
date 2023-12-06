@@ -36,9 +36,9 @@ public class BoardService  {
 			
 			// keyword가 없을때 = 전체 게시글 띄우기
 			if (keyword.equals("전체")) {
-				return boardRepo.findAll();
+				return boardRepo.findAll(Sort.by(Sort.Direction.DESC, "postId"));
 			} else {
-				return boardRepo.findByTitleContaining(keyword);
+				return boardRepo.findByTitleContainingOrderByPostIdDesc(keyword);
 			}
 		}
 		

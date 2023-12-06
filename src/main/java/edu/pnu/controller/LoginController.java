@@ -12,7 +12,7 @@ import edu.pnu.domain.Member;
 import edu.pnu.persistence.MemberRepository;
 
 @RestController
-@RequestMapping("/api")
+
 public class LoginController {
 
 	@Autowired
@@ -21,7 +21,12 @@ public class LoginController {
 	@Autowired
 	private PasswordEncoder encoder;
 
-	@PostMapping("/signup")
+	@PostMapping("/login")
+	public ResponseEntity<?> login(){
+		return ResponseEntity.ok("ok");
+	}
+	
+	@PostMapping("/api/signup")
 	public ResponseEntity<?> signup(@RequestBody Member member) {
 		System.out.println(member);
 
