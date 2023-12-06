@@ -56,7 +56,7 @@
   <p>[SpringBoot와 MySQL 표기법]</p>
   <p>SpringBoot에서 boardList라는 컬럼을 입력하면 MySQL에서는 board_List로 출력된다. Camel Case -> Snake Case</p>
   <p>[ResponseEntity]</p>
-  <p>ResponseEntity<?>일 때 <?>는 모든 타입을 받겠다</p>
+  <p>ResponseEntity"<?>"일 때 "<?>"는 모든 타입을 받겠다</p>
 </details>
   
 # 사용 기술
