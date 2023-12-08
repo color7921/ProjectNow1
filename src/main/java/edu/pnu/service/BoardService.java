@@ -23,33 +23,37 @@ public class BoardService  {
 //		List<Board> boardList = boardRepo.findAll();
 //		return boardList;
 //	}
-
+	
 	// 게시글 목록 출력 (page 버전)
 	public Page<Board> getBoardList(Integer pageNo) {
-		Pageable pageable = PageRequest.of(pageNo - 1, 15, Sort.Direction.DESC, "PostId");
+		
+		Pageable pageable = PageRequest.of(pageNo - 1, 15, Sort.Direction.DESC, "postId");
 		Page<Board> pageList = boardRepo.findAll(pageable);
+		pageList.forEach(b -> b.setImage(null));
+		
 		return pageList;
 	}
 	
-	// 게시판 목록에서 키워드에 해당하는 게시글 보내기
-		public List<Board> getBoardKeyword(String keyword, Integer postId){
-			
-			// keyword가 없을때 = 전체 게시글 띄우기
-			if (keyword.equals("전체")) {
-				return boardRepo.findAll(Sort.by(Sort.Direction.DESC, "postId"));
-			} else {
-				return boardRepo.findByTitleContainingOrderByPostIdDesc(keyword);
-			}
-		}
-		
 	// 게시판 상세정보 보내기
-	public List<Board> getPostDetail(Integer postId){
+	public Board getBoard(Integer postId) {
 		
-		boardRepo.updateCountByPostId(postId);
-		List<Board> boardObjectList = boardRepo.findByPostId(postId);
-		return boardObjectList;
+		Board board = boardRepo.findByPostId(postId);
+		board.setCount(board.getCount()+1);
+		boardRepo.save(board);
+		return board;
 	}
 	
+	// 게시판 목록에서 키워드에 해당하는 게시글 보내기
+	public List<Board> getBoardKeyword(String keyword, Integer postId){
+		
+		// keyword가 없을때 = 전체 게시글 띄우기
+		if (keyword.equals("전체")) {
+			return boardRepo.findAll(Sort.by(Sort.Direction.DESC, "postId"));
+		} else {
+			return boardRepo.findByTitleContainingOrderByPostIdDesc(keyword);
+		}
+	}
+		
 	// 특정 유저가 쓴 게시글 전부 보내기
 	public List<Board> getUsernameList(String username){
 		

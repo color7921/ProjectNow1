@@ -33,17 +33,17 @@ public class CommentController {
 	@PostMapping("/commWrite")
 	public ResponseEntity<?> postCommList(@RequestBody CommentRequestDto commDto, @AuthenticationPrincipal User user) {
 		List<Member> memberName = memRepo.findByUsername(commDto.getUsername());
-		List<Board> boardName = boardRepo.findByPostId(commDto.getPostId());
+		Board boardName = boardRepo.findByPostId(commDto.getPostId());
 		
 			commentRepo.save(Comment.builder()
 					.member(memberName.get(0))
-					.board(boardName.get(0))
+					.board(boardName)
 					.commContent(commDto.getCommContent())
 					.build());
 
 			
 			//ManyToOne fetch 옵션 FetchType.EAGER 기본값으로 설정되어 Comment 엔티티 조회 시 무조건 Post 객체를 가져옴
-			List<Comment> comments = commentRepo.findByBoard(boardName.get(0));
+			List<Comment> comments = commentRepo.findByBoard(boardName);
 			return ResponseEntity.ok().body(comments);
 		} 
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 import edu.pnu.domain.Board;
 import edu.pnu.persistence.BigTrashRepository;
@@ -20,16 +21,17 @@ public class Test11 {
 	@Autowired
 	BoardRepository boardRepository;
 	
-//	@Autowired
-//	BoardService boardService;
-	//@Test는 매개변수를 가질 수 없음
-//	 @Test
-//	 public void testGetBoard() {
-//		List<Board> list = boardService.getBoardList(null);
-//		list.forEach(b -> {
-//				b.setImage(null);
-//				System.out.println(b);
-//			}
-//		);
-//	}
+	@Autowired
+	BoardService boardService;
+	
+	 @Test
+	 public void testGetBoard() {
+		Page<Board> list = boardService.getBoardList(null);
+		System.out.println("##############" + list);
+		list.forEach(b -> {
+				b.setImage(null);
+				System.out.println(b);
+			}
+		);
+	}
 }

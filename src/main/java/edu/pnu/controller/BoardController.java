@@ -57,20 +57,26 @@ public class BoardController {
 //		}
 		
 	// 게시글 목록 출력 /api/user/nowList [ o ] (page 버전)
-		@GetMapping("/nowList")
-		public ResponseEntity<?> getBoardList(@RequestParam(required = false) Integer pageNo) {
-			Page<Board> boardList = boardService.getBoardList(pageNo);
-			return ResponseEntity.ok(boardList);
-		}
+	@GetMapping("/nowList")
+	public ResponseEntity<?> getBoardList(@RequestParam(required = false,defaultValue = "1") Integer pageNo) {
+		Page<Board> boardList = boardService.getBoardList(pageNo);
+		return ResponseEntity.ok(boardList);
+	}
+		
+	// 게시글 상세정보 보내기 /api/user/nowBoard?postId=? [ o ]
+	@GetMapping("/nowList/board")
+	public ResponseEntity<?> getBoardByPostId(Integer postId) {
+		Board board = boardService.getBoard(postId);
+		return ResponseEntity.ok(board);
+	}
 
 	// 게시글 등록 /api/user/nowWrite [ o ] 
 	@PostMapping("/nowWrite")
 	//requestbody - > multipart
 	public ResponseEntity<?> postBoardList(@RequestBody BigTrashRequestDto bigTrashRequestDto, @AuthenticationPrincipal User user) {
 		List<BigTrash> bigTrash = bigRepo.findBySidoAndCateAndNameAndSize(bigTrashRequestDto.getSido(), bigTrashRequestDto.getCate(), bigTrashRequestDto.getName(), bigTrashRequestDto.getSize());
-		
 		String name = user.getUsername();
-		
+		System.out.println(bigTrashRequestDto.getSido() + " #####" + bigTrashRequestDto.getCate());
 		Member member = memRepo.findById(name).get();
 		
 		// Board.builder : 생성 (update에 사용 x)
@@ -96,14 +102,6 @@ public class BoardController {
 	@GetMapping("/nowListSearch")
 	public ResponseEntity<?> getBoardKeyword(String keyword, Integer postId){
 		return ResponseEntity.ok().body(boardService.getBoardKeyword(keyword, postId));
-	}
-	
-	
-	// 게시글 상세정보 보내기 /api/user/nowBoard?postId=? [ o ]
-		@GetMapping("/nowBoard")
-		public ResponseEntity<?> getPostDetail(Integer postId, Integer bigId) {
-		
-			return ResponseEntity.ok().body(boardService.getPostDetail(postId));
 	}
 		
 	// 댓글 보내기 /api/user/nowComment?postId=? [ o ]
@@ -136,7 +134,7 @@ public class BoardController {
 	@PutMapping("/updateComment")
 	public ResponseEntity<?> updateComment(@RequestBody CommentUpdateDto commentUpdateDto){
 		
-		 List<Board> boardName = boardRepo.findByPostId(commentUpdateDto.getPostId());
+		 Board board = boardRepo.findByPostId(commentUpdateDto.getPostId());
 		 Optional<Comment> existingComment = commRepo.findById(commentUpdateDto.getCommentId());
 		 
 		 if (existingComment.isPresent()) {
@@ -144,7 +142,7 @@ public class BoardController {
 			 updatedComment.setCommContent(commentUpdateDto.getCommContent());
 			 commRepo.save(updatedComment);
 			 
-			 List<Comment> partCommentList = commRepo.findByBoard(boardName.get(0));
+			 List<Comment> partCommentList = commRepo.findByBoard(board);
 			 return ResponseEntity.ok().body(partCommentList);
 		 
 		
