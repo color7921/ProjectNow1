@@ -67,6 +67,11 @@
   
 # 사용 기술
 ---
+- SpringBoot 3.1.5
+- SpringSecurity 6.1.5
+- JSON Web Token 4.4.0
+- MySQL connector j 8.0.33
+- MySQL 8.0.34
 
 # 구현 기능
 ---
@@ -80,7 +85,10 @@
 |조회수, 페이징처리|게시글 상세 페이지를 클릭할 때마다 조회수 상승, 게시글 리스트 페이징 처리|
 # Rest API
 ---
-
+|Method|URI|화면|
+|------|---|---|
+|GET|api/search?sido={sido}&cate={cate}&keyword={keyword}|수수료 검색|
+|POST|/login|로그인|
 
 # ERD
 ---
