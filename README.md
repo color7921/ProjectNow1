@@ -85,10 +85,35 @@
 |조회수, 페이징처리|게시글 상세 페이지를 클릭할 때마다 조회수 상승, 게시글 리스트 페이징 처리|
 # Rest API
 ---
-|Method|URI|화면|
+
+## 검색, 로그인, 회원가입
+|Method|URI|설명|
 |------|---|---|
 |GET|api/search?sido={sido}&cate={cate}&keyword={keyword}|수수료 검색|
 |POST|/login|로그인|
+|POST|/api/signup|회원가입|
+
+## 게시판
+|Method|URI|설명|
+|------|---|---|
+|GET|/api/user/nowList?pageNo={pageNo}|게시글 리스트 전송|
+|GET|/api/user/nowListSearch?keyword={keyword}|제목에 키워드가 포함되는 게시글 리스트 전송|
+|GET|/api/user/nowList/board?postId={id}|게시글 상세 정보 전송|
+|DELETE|/api/user/delBoard?postId={id}|아이디에 해당되는 게시글, 댓글 삭제|
+|PUT|/api/user/updateNow|게시글 수정|
+|POST|/api/user/nowWrite|게시글 작성|
+|GET|/api/wastename?sido={sido}&cate={cate}|구, 카테고리에 해당되는 폐기물명 전송|
+|GET|/api/wastesize?sido={sido}&cate={cate}&name={name}|구, 카테고리, 폐기물명에 해당되는 사이즈 전송|
+
+## 댓글, 마이페이지
+|Method|URI|설명|
+|------|---|---|
+|GET|/api/user/nowComment?postId={id}|아이디에 해당하는 게시글의 댓글 정보 전송|
+|POST|/api/user/commWrite|댓글 작성|
+|PUT|/api/user/updateComment|댓글 수정|
+|DELETE|/api/user/delComment?commentId={id}|댓글 삭제|
+|GET|/api/user/mypage?username={username}|해당 유저가 작성한 게시글, 댓글 리스트 전송|
+
 
 # ERD
 ---
