@@ -7,6 +7,8 @@
 - 부산광역시 구별 대형 폐기물을 버릴 때 발생하는 수수료를 검색
 - 사용하지 않는 중고 제품을 무료 나눔
 
+### 시연 영상
+https://www.youtube.com/watch?v=qFSmtGsdRBI
 
 # 목차
 ---
