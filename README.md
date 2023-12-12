@@ -12,7 +12,7 @@
 - 부산광역시 구별 대형 폐기물을 버릴 때 발생하는 수수료를 검색할 수 있는 기능 구현하기
 
 ### 시연 영상
-### [▶영상 보러가기](https://www.youtube.com/watch?v=qFSmtGsdRBI)
+### `[▶영상 보러가기]`(https://www.youtube.com/watch?v=qFSmtGsdRBI)
 
 # 목차
 ---
