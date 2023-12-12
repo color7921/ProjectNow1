@@ -11,6 +11,7 @@
 - 사용하지 않는 중고 제품을 무료로 나눌 수 있는 게시판 만들기
 - 부산광역시 구별 대형 폐기물을 버릴 때 발생하는 수수료를 검색할 수 있는 기능 구현하기
 
+### [노션 주소](https://www.notion.so/2-98b0c42b4c5a4e8fb911aed5c0839910?pvs=4)
 ### 시연 영상
 ### [▶영상 보러가기](https://www.youtube.com/watch?v=qFSmtGsdRBI)
 
