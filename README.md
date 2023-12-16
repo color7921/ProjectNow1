@@ -57,13 +57,15 @@
 - 게시글 리스트 페이징 구현, 마이페이지 게시글 리스트, 댓글 리스트 전송
 
 
-### 이슈 기록
-[외래키 설정]
-ManyToOne fetch 옵션 FetchType.EAGER 기본값으로 설정되어 Comment 엔티티 조회 시 무조건 Post 객체를 가져옴
-[SpringBoot와 MySQL 표기법]
-SpringBoot에서 boardList라는 컬럼을 입력하면 MySQL에서는 board_List로 출력된다. (Camel Case -> Snake Case)
-[Cors]
-SecurityConfig 클래스의 requestMatchers(new AntPathRequestMatcher("/api/user/**")) 추가 후 문제 해결
+## 이슈 기록
+### [외래키 설정]
+- ManyToOne fetch 옵션 FetchType.EAGER 기본값으로 설정되어 Comment 엔티티 조회 시 무조건 Post 객체를 가져옴
+
+### [SpringBoot와 MySQL 표기법]
+- SpringBoot에서 boardList라는 컬럼을 입력하면 MySQL에서는 board_List로 출력된다. (Camel Case -> Snake Case)
+
+### [Cors]
+- SecurityConfig 클래스의 requestMatchers(new AntPathRequestMatcher("/api/user/**")) 추가 후 문제 해결
 
   
 # 사용 기술
