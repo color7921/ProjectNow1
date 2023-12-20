@@ -55,8 +55,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsFilter() {
     	
 	    CorsConfiguration config = new CorsConfiguration();
-	    config.addAllowedOrigin("http://localhost:3000"); // 교차를 허용할 Origin
-	    config.addAllowedOrigin("http://10.125.121.215:3000");
+	    config.addAllowedOrigin("http://10.125.121.215:3000, http://localhost:3000");
 	    config.addAllowedOriginPattern("*");
 	    config.addAllowedMethod(CorsConfiguration.ALL); // 교차를 허용할 Method
 	    config.addAllowedHeader(CorsConfiguration.ALL); // 교차를 허용할 Header
